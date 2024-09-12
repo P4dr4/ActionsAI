@@ -1,5 +1,7 @@
 name: "Actions AI"
-description: "A GitHub Action to run a compiled JavaScript file from the dist folder."
+description: "A GitHub Action to run a TypeScript project that compiles to JavaScript in the dist folder."
+icon: "cpu" 
+color: "blue" 
 
 inputs:
   prompt:
@@ -13,4 +15,9 @@ outputs:
 
 runs:
   using: "node20"
-  main: "dist/chatgpt2.js"
+  steps:
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run ChatGPT script
+      run: node dist/chatgpt2.js
