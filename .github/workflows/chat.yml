@@ -19,7 +19,7 @@ jobs:
         node-version: '20'
 
     - name: Install npm dependencies
-      run: npm install
+      run: npm install axios dotenv
 
     - name: Run reusable ChatGPT action
       uses: P4dr4/ActionsAI@main 
