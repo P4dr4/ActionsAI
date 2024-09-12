@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  npm_install:
+  call_to_chat:
     runs-on: ubuntu-latest
 
     steps:
