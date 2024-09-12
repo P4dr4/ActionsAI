@@ -1,4 +1,4 @@
-name: Node Setup version 20
+name: Using chat gpt2
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-
   npm_install:
     runs-on: ubuntu-latest
 
@@ -21,6 +20,11 @@ jobs:
 
     - name: Install npm dependencies
       run: npm install
+
+    - name: Run reusable ChatGPT action
+      uses: P4dr4/ActionsAI@main 
+      with:
+        prompt: "Where is USA?"
 
     - name: Run tests
       run: npm test

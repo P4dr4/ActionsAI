@@ -1,0 +1,16 @@
+name: "Actions AI"
+description: "A GitHub Action to run a compiled JavaScript file from the dist folder."
+
+inputs:
+  prompt:
+    description: "The prompt to send to the Hugging Face API"
+    required: true
+    default: "Where is USA?"
+
+outputs:
+  response:
+    description: "The response from the Hugging Face API"
+
+runs:
+  using: "node20"
+  main: "dist/chatgpt2.js"

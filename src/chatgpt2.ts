@@ -19,7 +19,7 @@ async function getHuggingFaceResponse(prompt: string) {
             {
                 inputs: prompt,
                 parameters: {
-                    max_length: 50,
+                    max_length: 100,
                 }
             },
             {
@@ -33,9 +33,9 @@ async function getHuggingFaceResponse(prompt: string) {
         if (response.data.length > 0) {
             let generatedText = response.data[0].generated_text;
 
-            const formattedText = generatedText
-                .replace(/\n\s*\n/g, '\n')  
-                .trim();                    
+            const sentences = generatedText.split('. ');
+            const uniqueSentences = Array.from(new Set(sentences));
+            const formattedText = uniqueSentences.join('. ').trim();
 
             if (formattedText) {
                 console.log('Response:', formattedText);
@@ -50,11 +50,11 @@ async function getHuggingFaceResponse(prompt: string) {
             
             setTimeout(() => {
                 getHuggingFaceResponse(prompt);
-            }, waitTime * 1000); 
+            }, waitTime * 1000);
         } else {
             console.error('Error:', error.response?.data || error.message);
         }
     }
 }
 
-getHuggingFaceResponse('How much is 3 + 2?');
+getHuggingFaceResponse('Where is USA?');

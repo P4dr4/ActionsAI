@@ -25,7 +25,7 @@ function getHuggingFaceResponse(prompt) {
             const response = yield axios_1.default.post(`https://api-inference.huggingface.co/models/${model}`, {
                 inputs: prompt,
                 parameters: {
-                    max_length: 50,
+                    max_length: 100,
                 }
             }, {
                 headers: {
@@ -35,12 +35,12 @@ function getHuggingFaceResponse(prompt) {
             });
             if (response.data.length > 0) {
                 let generatedText = response.data[0].generated_text;
-                const formattedText = generatedText
-                    .replace(/\n\s*\n/g, '\n') // Remove excessive line breaks
-                    .trim(); // Remove extra spaces at start/end
+                const sentences = generatedText.split('. ');
+                const uniqueSentences = Array.from(new Set(sentences));
+                const formattedText = uniqueSentences.join('. ').trim();
                 if (formattedText) {
                     console.log('Response:', formattedText);
-                    return; // Stop further processing if valid text is found
+                    return;
                 }
             }
         }
@@ -50,7 +50,7 @@ function getHuggingFaceResponse(prompt) {
                 console.log(`Model is still loading. Retrying in ${waitTime} seconds...`);
                 setTimeout(() => {
                     getHuggingFaceResponse(prompt);
-                }, waitTime * 1000); // Wait for the estimated loading time before retrying
+                }, waitTime * 1000);
             }
             else {
                 console.error('Error:', ((_d = error.response) === null || _d === void 0 ? void 0 : _d.data) || error.message);
@@ -58,4 +58,4 @@ function getHuggingFaceResponse(prompt) {
         }
     });
 }
-getHuggingFaceResponse('How much is 3 + 2?');
+getHuggingFaceResponse('Where is USA?');
