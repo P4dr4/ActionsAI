@@ -31,7 +31,7 @@ jobs:
     - name: Run reusable ChatGPT action
       uses: P4dr4/ActionsAI@main 
       with:
-        prompt: "${{ env.install_output }}"
+        prompt: "Hello"
 
     - name: Run tests
       run: npm test
