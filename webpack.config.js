@@ -1,7 +1,8 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/chatgpt2.ts',  // Entry point of your TypeScript file
+  mode: 'production',
+  entry: './src/chatgpt2.ts',
   module: {
     rules: [
       {
@@ -15,8 +16,8 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
   output: {
-    filename: 'chatgpt2.js',  // Output filename
-    path: path.resolve(__dirname, 'dist'),  // Output directory
+    filename: 'chatgpt2.js',
+    path: path.resolve(__dirname, 'dist'),
   },
-  target: 'node',  // Specify the target environment (Node.js)
+  target: 'node',
 };
