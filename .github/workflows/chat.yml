@@ -19,18 +19,17 @@ jobs:
         node-version: '20'
 
     - name: Install npm dependencies
-      id: npm_install 
+      id: npm_install
       run: |
-        npm install axios dotenv
-        echo "install_output=$(npm install axios dotenv)" >> $GITHUB_ENV
+        npm install axios dotenv | tee install_output.txt
 
-    - name: Capture install output for the prompt
-      run: echo "prompt=$(cat $GITHUB_ENV | grep 'install_output')" >> $GITHUB_ENV
+    - name: Capture npm install output as environment variable
+      run: echo "install_output=$(cat install_output.txt)" >> $GITHUB_ENV
 
     - name: Run reusable ChatGPT action
       uses: P4dr4/ActionsAI@main 
       with:
-        prompt: "${{ steps.npm_install.outputs.install_output }}"
+        prompt: "${{ env.install_output }}"
 
     - name: Run tests
       run: npm test
