@@ -62,11 +62,8 @@ async function getHuggingFaceResponse(prompt: string) {
     }
 }
 
-// Capture the prompt from the GitHub Action input
 const actionPrompt = process.env.INPUT_PROMPT || 'Default prompt text';
 
-// Check and sanitize the prompt
 const sanitizedPrompt = actionPrompt.trim();
 
-// Run the Hugging Face request
 getHuggingFaceResponse(sanitizedPrompt);
