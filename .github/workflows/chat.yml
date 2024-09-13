@@ -3,7 +3,7 @@ name: Using chat gpt2
 on:
   push:
     branches:
-      - main
+      - development
 
 jobs:
   call_to_chat:
