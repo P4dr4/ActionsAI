@@ -33,13 +33,14 @@ async function getHuggingFaceResponse(prompt: string) {
         if (response.data.length > 0) {
             let generatedText = response.data[0].generated_text;
 
-            const sentences = generatedText.split('. ');
+            // Remove redundant or repetitive parts more rigorously
+            const sentences = generatedText.split(/[.?!]\s+/);
             const uniqueSentences = Array.from(new Set(sentences));
             const formattedText = uniqueSentences.join('. ').trim();
 
             if (formattedText) {
                 console.log('Response:', formattedText);
-                return;  
+                return formattedText;
             }
         }
 
@@ -57,4 +58,12 @@ async function getHuggingFaceResponse(prompt: string) {
     }
 }
 
-getHuggingFaceResponse('Where is USA?');
+function sanitizeNpmOutput(output: string): string {
+    return output.split('\n').filter(line => !line.includes('run') && !line.includes('vulnerabilities')).join(' ');
+}
+
+const actionPrompt = process.env.INPUT_PROMPT || 'Default prompt text';
+
+const sanitizedPrompt = sanitizeNpmOutput(actionPrompt);
+
+getHuggingFaceResponse(sanitizedPrompt);
