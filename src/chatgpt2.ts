@@ -11,6 +11,11 @@ async function getHuggingFaceResponse(prompt: string) {
         return;
     }
 
+    if (!prompt || prompt.trim() === '') {
+        console.error('Prompt is empty or invalid.');
+        return;
+    }
+
     const model = 'EleutherAI/gpt-neo-1.3B';
 
     try {
@@ -33,7 +38,6 @@ async function getHuggingFaceResponse(prompt: string) {
         if (response.data.length > 0) {
             let generatedText = response.data[0].generated_text;
 
-            // Remove redundant or repetitive parts more rigorously
             const sentences = generatedText.split(/[.?!]\s+/);
             const uniqueSentences = Array.from(new Set(sentences));
             const formattedText = uniqueSentences.join('. ').trim();
@@ -58,12 +62,11 @@ async function getHuggingFaceResponse(prompt: string) {
     }
 }
 
-function sanitizeNpmOutput(output: string): string {
-    return output.split('\n').filter(line => !line.includes('run') && !line.includes('vulnerabilities')).join(' ');
-}
-
+// Capture the prompt from the GitHub Action input
 const actionPrompt = process.env.INPUT_PROMPT || 'Default prompt text';
 
-const sanitizedPrompt = sanitizeNpmOutput(actionPrompt);
+// Check and sanitize the prompt
+const sanitizedPrompt = actionPrompt.trim();
 
+// Run the Hugging Face request
 getHuggingFaceResponse(sanitizedPrompt);
