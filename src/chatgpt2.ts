@@ -66,4 +66,4 @@ const actionPrompt = process.env.INPUT_PROMPT || 'Default prompt text';
 
 const sanitizedPrompt = actionPrompt.trim();
 
-getHuggingFaceResponse(sanitizedPrompt);
+getHuggingFaceResponse("Is this sucessfull? (Only yes or no) :" + sanitizedPrompt);
