@@ -23,15 +23,15 @@ jobs:
       run: |
         npm install axios dotenv | tee install_output.txt
 
-    - name: Encode npm install output as base64
+    - name: Capture a part of npm install output
       run: |
-        base64 install_output.txt > install_output_base64.txt
-        echo "install_output_base64=$(cat install_output_base64.txt)" >> $GITHUB_ENV
+        head -n 10 install_output.txt > install_output_short.txt
+        echo "install_output=$(cat install_output_short.txt)" >> $GITHUB_ENV
 
     - name: Run reusable ChatGPT action
       uses: P4dr4/ActionsAI@main 
       with:
-        prompt: "${{ env.install_output_base64 }}"
+        prompt: "${{ env.install_output }}"
 
     - name: Run tests
       run: npm test
