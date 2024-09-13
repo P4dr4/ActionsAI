@@ -7,7 +7,7 @@ async function getHuggingFaceResponse(prompt: string) {
     const apiKey = process.env.API_KEY;
 
     if (!apiKey) {
-        console.error('API key is not defined. Make sure you have an .env file with API_KEY defined.');
+        console.error('API key is not defined.');
         return;
     }
 
@@ -24,7 +24,7 @@ async function getHuggingFaceResponse(prompt: string) {
             {
                 inputs: prompt,
                 parameters: {
-                    max_length: 100,
+                    max_length: 50,
                 }
             },
             {
@@ -38,13 +38,14 @@ async function getHuggingFaceResponse(prompt: string) {
         if (response.data.length > 0) {
             let generatedText = response.data[0].generated_text;
 
-            const sentences = generatedText.split(/[.?!]\s+/);
-            const uniqueSentences = Array.from(new Set(sentences));
-            const formattedText = uniqueSentences.join('. ').trim();
+            const firstAnswer = generatedText.match(/\b(yes|no)\b/i);
 
-            if (formattedText) {
-                console.log('Response:', formattedText);
-                return formattedText;
+            if (firstAnswer) {
+                console.log('Response:', firstAnswer[0]);
+                return firstAnswer[0];
+            } else {
+                console.log('Response:', generatedText);
+                return generatedText;
             }
         }
 
@@ -63,7 +64,5 @@ async function getHuggingFaceResponse(prompt: string) {
 }
 
 const actionPrompt = process.env.INPUT_PROMPT || 'Default prompt text';
-
 const sanitizedPrompt = actionPrompt.trim();
-
-getHuggingFaceResponse("Is this sucessfull? (Only yes or no) :" + sanitizedPrompt);
+getHuggingFaceResponse("Is this successful? (Only yes or no): " + sanitizedPrompt);
